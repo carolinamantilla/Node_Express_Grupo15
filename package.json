@@ -1,0 +1,24 @@
+{
+  "name": "node_express_grupo15",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carolinamantilla/Node_Express_Grupo15.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/carolinamantilla/Node_Express_Grupo15/issues"
+  },
+  "homepage": "https://github.com/carolinamantilla/Node_Express_Grupo15#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "5.0.15",
+    "morgan": "^1.10.0"
+  }
+}
