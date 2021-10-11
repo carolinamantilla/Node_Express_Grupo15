@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const router = Router();
 const {salesController} = require('../controllers');
-const verifyProducts = require('../mdl/VerifyProducts')
+const verifyProducts = require('../mdl/VerifyProducts');
 
 router.get('/uno', salesController.getSale);
 
