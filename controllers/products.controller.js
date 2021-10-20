@@ -1,77 +1,125 @@
 const ProductSchema = require('../models/product')
+const { validationResult } = require('express-validator');
 
 const getProduct = async (req,res)=>{
-    if(typeof req.body != 'undefined'){
+    if(typeof req.params.id != 'undefined'){
         try{
-            let product = await ProductSchema.findById(req.body.id);
-            res.json({product}); 
+            let product = await ProductSchema.findById(req.params.id);
+            res.status(200).json({data: product}); 
         }
         catch(err){
-            console.error(err);
-        }
-    }else{
-        res.json({msg: "No se puede encontrar el producto."})
-    }       
-}
-
-const getProducts = async (req,res)=>{
-    try{
-        let products = await ProductSchema.find();
-        res.json({products}); 
-    }
-    catch(err){
-        console.error(err);
-    }
-}
-
-const createProduct = async (req,res)=>{
-    if(typeof req.body != 'undefined'){
-       let product = new ProductSchema(req.body);
-        try{
-            await product.save();
-            res.json({msg: 'Se ha creado el producto: ' + product.id}); 
-        }
-        catch(err){
-            console.error(err);
-        }
-    }else{
-        res.json({msg: "No se puede crear el producto."})
-    }       
-}
-
-const updateProduct = async (req,res)=>{
-    if(typeof req.body != 'undefined'){
-        try{
-            await ProductSchema.findOneAndUpdate(
-                { _id: req.body.id },
-                {
-                   descripcion: req.body.descripcion,
-                   valorUnitario: req.body.valorUnitario,
-                   estado: req.body.estado
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Producto no encontrado"
                 }
-            );
-            res.json({msg: "Se ha actualizado el producto: " + req.body.id});
-        }
-        catch(err){
-            console.error(err);
+            })
         }
     }else{
-        res.json({msg: "No se puede actualizar el producto: " + req.body.id})
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "ID not found"
+            }
+        })
     }       
 }
 
-const deleteProduct = async (req,res)=>{
-    if(typeof req.body != 'undefined'){
-        try{
-            await ProductSchema.findOneAndRemove(req.body.id);
-            res.json({msg: 'Se ha eliminado el producto: ' + req.body.id}); 
+const getProducts = async (req, res) => {
+    try {
+        let products = await ProductSchema.find();
+        res.status(200).json({ data: products });
+    }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Problemas con la base de datos" + err.message
+            }
+        })
+    }
+}
+
+const createProduct = async (req, res) => {
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        
+        return res.status(400).json({
+            error: {
+                code: 404,
+                errors: errors.array()
+            }
+        });
+    }
+    let product = new ProductSchema(req.body);
+    try {
+        await product.save();
+        res.status(201).json({ data: product });
+    }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Problemas con la base de datos" + err.message
+            }
+        })
+    }
+}
+
+const updateProduct = async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            error: {
+                code: 404,
+                errors: errors.array()
+            }
+        });
+    }
+    try {
+        let newProduct = {
+            id: req.params.id,
+            descripcion: req.body.descripcion,
+            valor: req.body.valor,
+            estado: req.body.estado
         }
-        catch(err){
-            console.error(err);
+        await ProductSchema.findByIdAndUpdate(req.params.id, newProduct);
+        res.status(201).json({ data: newProduct })
+    }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "ID not found"
+            }
+        })
+    }
+}
+
+
+const deleteProduct = async (req, res) => {
+    if (req.params.id != 'undefined') {
+        try {
+            let result = await ProductSchema.findByIdAndRemove(req.params.id);
+            res.status(200).json({ data: result });
         }
-        }else{
-            res.json({msg: "No se puede eliminar el producto."})
-        }    
+        catch (err) {
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Producto no encontrado"
+                }
+            })
+        }
+    } else {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "ID not found"
+            }
+        })
+    }
 }
 
 module.exports.getProduct = getProduct;

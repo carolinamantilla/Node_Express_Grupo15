@@ -1,81 +1,127 @@
 const SaleSchema = require('../models/sale')
+const { validationResult } = require('express-validator');
 
 const getSale = async(req,res)=>{
-    if(typeof req.body != 'undefined'){
+    if(typeof req.params.id != 'undefined'){
         try{
-            let sale = await SaleSchema.findById(req.body.id);
-            res.json({sale}); 
+            let sale = await SaleSchema.findById(req.params.id);
+            res.status(200).json({data: sale}); 
         }
         catch(err){
-            console.error(err);
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Venta no encontrada"
+                }
+            })
         }
     }else{
-        res.json({msg: "No se puede encontrar la venta."})
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "ID not found"
+            }
+        })
     }       
 }
 
 const getSales = async (req,res)=>{
     try{
         let sales = await SaleSchema.find();
-        res.json({sales}); 
+        res.status(200).json({ data: sales }); 
     }
     catch(err){
-        console.error(err);
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Problemas con la base de datos" + err.message
+            }
+        })
     }
-    
 }
 
 const createSale = async (req,res)=>{
-    if(typeof req.body != 'undefined'){
-        let venta = new SaleSchema(req.body);
-         try{
-             await venta.save();
-             res.json({msg: 'Se ha creado la venta: ' + venta.id}); 
-         }
-         catch(err){
-             console.error(err);
-         }
-     }else{
-         res.json({msg: "No se puede crear la venta."})
-     }       
+
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+        
+        return res.status(400).json({
+            error: {
+                code: 404,
+                errors: errors.array()
+            }
+        });
+    }
+    let sale = new SaleSchema(req.body);
+    try{
+        await sale.save();
+        res.status(201).json({ data: sale }); 
+    }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "Problemas con la base de datos" + err.message
+            }
+        })
+    }     
 }
 
 const updateSale =  async (req,res)=>{
-    if(typeof req.body != 'undefined'){
-        try{
-            await SaleSchema.findOneAndUpdate(
-                { _id: req.body.id },
-                {
-                    fecha: req.body.fecha,
-                    documentoCliente: req.body.documentoCliente,
-                    nombreCliente: req.body.nombreCliente,
-                    documentoVendedor: req.body.documentoVendedor,
-                    estado: req.body.estado,
-                    valorTotal: req.body.valorTotal,
-                }
-            );
-            res.json({msg: "Se ha actualizado la venta: " + req.body.id});
+	const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({
+            error: {
+                code: 404,
+                errors: errors.array()
+            }
+        });
+    }
+    try{
+        let newSale = {
+			id: req.params.id,
+            fecha: req.body.fecha,
+            documentoCliente: req.body.documentoCliente,
+            nombreCliente: req.body.nombreCliente,
+            documentoVendedor: req.body.documentoVendedor,
+            estado: req.body.estado,
+            valorTotal: req.body.valorTotal
         }
-        catch(err){
-            console.error(err);
-        }
-    }else{
-        res.json({msg: "No se puede actualizar la venta: " + req.body.id})
-    }           
-}
+        await SaleSchema.findByIdAndUpdate(req.params.id, newSale);
+        res.status(201).json({ data: newSale })
+    }
+    catch (err) {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "ID not found"
+            }
+        })
+    }
+}             
 
-const deleteSale = async(req,res)=>{
-    if(typeof req.body != 'undefined'){
-        try{
-            await SaleSchema.findOneAndRemove(req.body.id);
-            res.json({msg: 'Se ha eliminado la venta: ' + req.body.id}); 
+const deleteSale = async (req, res) => {
+    if (req.params.id != 'undefined') {
+        try {
+            let result = await SaleSchema.findByIdAndRemove(req.params.id);
+            res.status(200).json({ data: result });
         }
-        catch(err){
-            console.error(err);
+        catch (err) {
+            res.status(404).json({
+                error: {
+                    code: 404,
+                    message: "Venta no encontrada"
+                }
+            })
         }
-        }else{
-            res.json({msg: "No se puede eliminar la venta."})
-        }   
+    } else {
+        res.status(404).json({
+            error: {
+                code: 404,
+                message: "ID not found"
+            }
+        })
+    }
 }
 
 module.exports.getSale = getSale;

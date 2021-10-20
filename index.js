@@ -1,28 +1,31 @@
 const express = require('express');
-const app = express();
-const routes = require('./routes');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const dbConfig = require('./config/db');
+const app = express();
 
 app.use(express.json())
 
-mongoose.connect(dbConfig.dbStringConnect)
+const dbConfig = require('./config/dbConfig');
+
+mongoose.connect(dbConfig.urlDatabase)
     .then(db => console.log("db connected"))
     .catch(err => console.error(err))
 
-const port = 3001;
+app.use(morgan("combined"));
 
-app.use(morgan("dev"));
+require('dotenv').config();
+
+const port = process.env.PORT;
+
+app.listen(port, () => {
+    console.log(`server listen http://localhost:${port}`)
+})
 
 app.get('/', (req, res) =>{
     res.json({status:200});
 })
 
+const routes = require('./routes');
+
 app.use('/productos', routes.productsRoutes);
 app.use('/ventas', routes.salesRoutes);
-
-app.listen(port,()=>{
-    console.log(`Listening on port http://localhost:${port}`);
-
-});

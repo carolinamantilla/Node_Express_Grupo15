@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/carolinamantilla/Node_Express_Grupo15#readme",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "express-validator": "^6.13.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "5.0.15",
     "morgan": "^1.10.0"
   }
