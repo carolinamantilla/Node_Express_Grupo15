@@ -52,6 +52,28 @@ const createSale = async (req,res)=>{
             }
         });
     }
+
+    req.body.productos.forEach(async(element) => {
+        if(mongoose.Types.ObjectId.isValid(element._id)){
+            let product = await ProductSchema.findById(element._id);
+            if(!product) {
+                return res.status(400).json({
+                    error: {
+                        code: 404,
+                        message: `Producto con id:${element._id} no existe`
+                    }
+                })
+            }
+        }else{
+            return res.status(400).json({
+                error: {
+                    code: 404,
+                    message: `Producto con id:${element._id} no existe`
+                }
+            })
+        }
+    }); 
+    
     let sale = new SaleSchema(req.body);
     try{
         await sale.save();

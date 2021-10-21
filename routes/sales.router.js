@@ -16,7 +16,7 @@ router.post('/',
     body('documentoVendedor', 'El documento del vendedor es requerido y debe ser numerico').exists().isNumeric(),
     body('estado', 'El estado de la venta es requerido(En proceso/Cancelada/Entregada)').exists(),
     body('valorTotal', 'El valor total de la venta es requerido y debe ser numerico').exists().isNumeric(),
-    //body('productos', 'Los productos son requeridos').exists(),
+    body('productos', 'Los productos son requeridos').exists(),
     salesController.createSale);
 
 router.put('/:id',
@@ -26,8 +26,8 @@ router.put('/:id',
     body('documentoVendedor', 'El documento del vendedor es requerido y debe ser numerico').exists().isNumeric(),
     body('estado', 'El estado de la venta es requerido(En proceso/Cancelada/Entregada)').exists(),
     body('valorTotal', 'El valor total de la venta es requerido y debe ser numerico').exists().isNumeric(),
-    //body('productos', 'Los productos son requeridos').exists(),
-     salesController.updateSale);
+    body('productos', 'Los productos son requeridos').exists(),
+    salesController.updateSale);
     
 router.delete('/:id', salesController.deleteSale);
 

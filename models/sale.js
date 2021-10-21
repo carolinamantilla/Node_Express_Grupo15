@@ -45,4 +45,6 @@ const SaleSchema = Schema({
         
 })
 
+
+
 module.exports = mongoose.model('sales',SaleSchema);
