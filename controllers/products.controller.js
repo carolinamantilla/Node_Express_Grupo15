@@ -1,6 +1,4 @@
-//Importando el modelo de Base de datos de los productos
 const ProductSchema = require('../models/product');
-//importando la libreria que nos permite capturar los errores en el cuerpo de la solicitudes
 const { validationResult } = require('express-validator');
 
 const getProduct = async (req, res) => {
@@ -43,10 +41,8 @@ const getProducts = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-    //verificando que si hay errores en los parametros de la solictud
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        //si existen errores damos una respuesta erronea
         return res.status(400).json({
             error: {
                 code: 404,
