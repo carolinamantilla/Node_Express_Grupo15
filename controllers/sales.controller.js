@@ -107,7 +107,8 @@ const updateSale =  async (req,res)=>{
             nombreCliente: req.body.nombreCliente,
             documentoVendedor: req.body.documentoVendedor,
             estado: req.body.estado,
-            valorTotal: req.body.valorTotal
+            valorTotal: req.body.valorTotal,
+            productos: req.body.productos
         }
         await SaleSchema.findByIdAndUpdate(req.params.id, newSale);
         res.status(201).json({ data: newSale })
