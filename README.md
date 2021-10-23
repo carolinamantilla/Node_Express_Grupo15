@@ -1,1 +1,3 @@
-# Node_Express_Grupo15
+# Backend del Módulo administrador de productos
+
+### Keidy Mercado Sierra

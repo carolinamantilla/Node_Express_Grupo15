@@ -122,7 +122,7 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({
                 error: {
                     code: 404,
-                    message: "Usero no encontrado"
+                    message: "Usuario no encontrado"
                 }
             })
         }
