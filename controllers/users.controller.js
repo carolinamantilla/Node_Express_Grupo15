@@ -1,4 +1,4 @@
-const UserSchema = require('../models/user');
+/*const UserSchema = require('../models/user');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 
@@ -140,4 +140,4 @@ module.exports.createUser = createUser;
 module.exports.getUser = getUser;
 module.exports.deleteUser = deleteUser;
 module.exports.getUsers = getUsers;
-module.exports.updateUser = updateUser;
+module.exports.updateUser = updateUser;*/

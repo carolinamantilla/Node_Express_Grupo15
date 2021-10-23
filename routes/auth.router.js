@@ -1,4 +1,4 @@
-const { Router } = require('express');
+/*const { Router } = require('express');
 const router = Router();
 const { body } = require('express-validator');
 const { authController } = require('../controllers')
@@ -15,4 +15,4 @@ router.post('/login',
 
 router.get('/verifyToken',verifyToken,authController.validateToken)
 
-module.exports = router;
+module.exports = router;*/

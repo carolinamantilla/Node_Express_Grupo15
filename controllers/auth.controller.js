@@ -1,4 +1,4 @@
-const UserSchema = require('../models/user');
+/*const UserSchema = require('../models/user');
 const { validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -49,4 +49,4 @@ const validateToken = (req, res) => {
 }
 
 module.exports.login = login;
-module.exports.validateToken = validateToken;
+module.exports.validateToken = validateToken;*/

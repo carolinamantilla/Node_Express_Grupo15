@@ -1,4 +1,4 @@
-const { Router } = require('express');
+/*const { Router } = require('express');
 const router = Router();
 const { body } = require('express-validator');
 const { usersController } = require('../controllers');
@@ -32,4 +32,4 @@ router.put('/:id',
 
 router.delete('/:id', verifyToken, usersController.deleteUser)
 
-module.exports = router;
+module.exports = router;*/
