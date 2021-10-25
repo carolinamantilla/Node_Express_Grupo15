@@ -1,25 +1,20 @@
 {
-  "name": "node_express_grupo15",
+  "name": "mision_tic_back",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/carolinamantilla/Node_Express_Grupo15.git"
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/carolinamantilla/Node_Express_Grupo15/issues"
-  },
-  "homepage": "https://github.com/carolinamantilla/Node_Express_Grupo15#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-validator": "^6.13.0",
+    "express-validator": "^6.12.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "5.0.15",
     "morgan": "^1.10.0"
