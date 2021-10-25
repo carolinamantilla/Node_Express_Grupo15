@@ -1,6 +1,6 @@
 const UserSchema = require('../models/user');
 const { validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 
 const getUser = async (req, res) => {
     if (req.params.id != 'undefined') {
@@ -64,8 +64,8 @@ const createUser = async (req, res) => {
     }
 
     let newUser = req.body
-    let salt = await bcrypt.genSalt(10);
-    newUser.password = await bcrypt.hash(newUser.password, salt);
+    //let salt = await bcrypt.genSalt(10);
+    //newUser.password = await bcrypt.hash(newUser.password, salt);
 
     let user = new UserSchema(newUser);
     try {
@@ -94,8 +94,8 @@ const updateUser = async (req, res) => {
     }
     try {
         let newUser = req.body
-        let salt = await bcrypt.genSalt(10);
-        newUser.password = await bcrypt.hash(newUser.password, salt);
+        //let salt = await bcrypt.genSalt(10);
+        //newUser.password = await bcrypt.hash(newUser.password, salt);
         await UserSchema.findByIdAndUpdate(req.params.id, newUser);
         return res.status(201).json({ data: newUser })
     }

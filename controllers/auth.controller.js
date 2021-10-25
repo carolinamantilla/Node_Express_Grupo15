@@ -1,6 +1,6 @@
 const UserSchema = require('../models/user');
 const { validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -17,7 +17,9 @@ const login = async (req, res) => {
     }
 
     const user = await UserSchema.findOne({ email: req.body.email });
-    const validatePassword = await bcrypt.compare(req.body.password, user.password);
+    //const validatePassword = await bcrypt.compare(req.body.password, user.password);
+    let validatePassword;
+    req.body.password === user.password? validatePassword=true : validatePassword=false;
     if (!validatePassword) {
         return res.status(403).json({
             error: {

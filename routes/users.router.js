@@ -17,7 +17,7 @@ router.post('/',
         .isLength({ min: 5, max: 100 }),
     body('password', 'la contraseña es requerida y debe estar entre(8,16) carecteres')
         .isLength({ min: 8, max: 16 }),
-    body('estado', 'El estado del producto es requerido(true/false)').isBoolean().exists(),
+
     usersController.createUser)
 
 
