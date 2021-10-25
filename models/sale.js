@@ -17,34 +17,27 @@ const ProductSaleDetailSchema = Schema({
 })
 
 const SaleSchema = Schema({
-    fecha: {
-        type: Date,
-        default: Date.now
-    },
-    documentoCliente: {
-        type: String,
-        require: true
+    valor: {
+        type: Number,
+        require: true,
     },
     nombreCliente: {
         type: String,
         require: true
     },
-    documentoVendedor: {
+    idCliente: {
         type: String,
         require: true
     },
-    estado: {
+    idVendedor: {
         type: String,
         require: true
     },
-    valorTotal: {
-        type: Number,
-        require: true,
-    },
-    productos: [ProductSaleDetailSchema]
-        
+    productos: [ProductSaleDetailSchema],
+    fecha: {
+        type: Date,
+        default: Date.now
+    }
 })
 
-
-
-module.exports = mongoose.model('sales',SaleSchema);
+module.exports = mongoose.model('sales', SaleSchema);

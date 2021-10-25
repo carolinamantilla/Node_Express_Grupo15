@@ -1,34 +1,29 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const router = Router();
-const {salesController} = require('../controllers');
 const { body } = require('express-validator');
-const verifyProducts = require('../mdl/VerifyProducts');
-const verifyToken = require('../mdl/verifyToken');
+const { salesController } = require('../controllers');
+//const verifyToken = require('../middlewares/verifyToken');
 
 router.get('/:id', salesController.getSale);
 
 router.get('/', salesController.getSales);
 
-router.post('/', 
-    body('fecha', 'La fecha de la venta es requerida').exists().isDate(),
-    body('documentoCliente', 'El documentos del cliente es requerido y debe ser numerico').exists().isNumeric(),
-    body('nombreCliente', 'El nombre del cliente es requerido').exists(),
-    body('documentoVendedor', 'El documento del vendedor es requerido y debe ser numerico').exists().isNumeric(),
-    body('estado', 'El estado de la venta es requerido(En proceso/Cancelada/Entregada)').exists(),
-    body('valorTotal', 'El valor total de la venta es requerido y debe ser numerico').exists().isNumeric(),
-    body('productos', 'Los productos son requeridos').exists(),
-    salesController.createSale);
+router.post('/',
+    body('valor', 'El valor es requerido y debe ser numerico').exists(),
+    body('nombreCliente', 'nombreCliente es requerido').exists(),
+    body('idCliente', 'idCliente es requerido').exists(),
+    body('idVendedor', 'idVendedor es requerido').exists(),
+    body('productos', 'productos son requeridos').exists().notEmpty()
+    , salesController.createSale);
 
 router.put('/:id',
-    body('fecha', 'La fecha de la venta es requerida').exists().isDate(),
-    body('documentoCliente', 'El documentos del cliente es requerido y debe ser numerico').exists().isNumeric(),
-    body('nombreCliente', 'El nombre del cliente es requerido').exists(),
-    body('documentoVendedor', 'El documento del vendedor es requerido y debe ser numerico').exists().isNumeric(),
-    body('estado', 'El estado de la venta es requerido(En proceso/Cancelada/Entregada)').exists(),
-    body('valorTotal', 'El valor total de la venta es requerido y debe ser numerico').exists().isNumeric(),
-    body('productos', 'Los productos son requeridos').exists(),
-    salesController.updateSale);
-    
+    body('valor', 'El valor es requerido y debe ser numerico').exists(),
+    body('nombreCliente', 'nombreCliente es requerido').exists(),
+    body('idCliente', 'idCliente es requerido').exists(),
+    body('idVendedor', 'idVendedor es requerido').exists(),
+    body('productos', 'productos son requeridos').exists().notEmpty()
+    ,salesController.updateSale);
+
 router.delete('/:id', salesController.deleteSale);
 
 module.exports = router;

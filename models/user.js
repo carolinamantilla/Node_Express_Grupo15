@@ -51,6 +51,9 @@ const UserSchema = Schema({
     direccion: {
         type: 'string'
     },
+    estado: {
+        type: 'boolean',
+    },
     date: {
         type: Date,
         default: Date.now

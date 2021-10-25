@@ -1,36 +1,38 @@
-const SaleSchema = require('../models/sale')
+const SaleSchema = require('../models/sale');
+const ProductSchema = require('../models/product');
 const { validationResult } = require('express-validator');
+const mongoose = require('mongoose');
 
-const getSale = async(req,res)=>{
-    if(typeof req.params.id != 'undefined'){
-        try{
+const getSale = async (req, res) => {
+    if (req.params.id != 'undefined') {
+        try {
             let sale = await SaleSchema.findById(req.params.id);
-            res.status(200).json({data: sale}); 
+            res.status(200).json({ data: sale });
         }
-        catch(err){
+        catch (err) {
             res.status(404).json({
                 error: {
                     code: 404,
-                    message: "Venta no encontrada"
+                    message: "Venta no encontrado"
                 }
             })
         }
-    }else{
+    } else {
         res.status(404).json({
             error: {
                 code: 404,
                 message: "ID not found"
             }
         })
-    }       
+    }
 }
 
-const getSales = async (req,res)=>{
-    try{
+const getSales = async (req, res) => {
+    try {req.params
         let sales = await SaleSchema.find();
-        res.status(200).json({ data: sales }); 
+        res.status(200).json({ data: sales });
     }
-    catch(err){
+    catch (err) {
         res.status(404).json({
             error: {
                 code: 404,
@@ -40,10 +42,10 @@ const getSales = async (req,res)=>{
     }
 }
 
-const createSale = async (req,res)=>{
-
-	const errors = validationResult(req);
-	if (!errors.isEmpty()) {
+const createSale = async (req, res) => {
+    
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
         
         return res.status(400).json({
             error: {
@@ -52,7 +54,7 @@ const createSale = async (req,res)=>{
             }
         });
     }
-
+ 
     req.body.productos.forEach(async(element) => {
         if(mongoose.Types.ObjectId.isValid(element._id)){
             let product = await ProductSchema.findById(element._id);
@@ -73,11 +75,11 @@ const createSale = async (req,res)=>{
             })
         }
     }); 
-    
+
     let sale = new SaleSchema(req.body);
-    try{
+    try {
         await sale.save();
-        res.status(201).json({ data: sale }); 
+        res.status(201).json({ data: sale });
     }
     catch (err) {
         res.status(404).json({
@@ -86,11 +88,11 @@ const createSale = async (req,res)=>{
                 message: "Problemas con la base de datos" + err.message
             }
         })
-    }     
+    }
 }
 
-const updateSale =  async (req,res)=>{
-	const errors = validationResult(req);
+const updateSale = async (req, res) => {
+    const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({
             error: {
@@ -99,16 +101,15 @@ const updateSale =  async (req,res)=>{
             }
         });
     }
-    try{
+    try {
         let newSale = {
-			id: req.params.id,
-            fecha: req.body.fecha,
-            documentoCliente: req.body.documentoCliente,
+            id: req.params.id,
+            valor: req.body.valor,
             nombreCliente: req.body.nombreCliente,
-            documentoVendedor: req.body.documentoVendedor,
-            estado: req.body.estado,
-            valorTotal: req.body.valorTotal,
-            productos: req.body.productos
+            idCliente: req.body.idCliente,
+            idVendedor: req.body.idVendedor,
+            productos: req.body.productos,
+            fecha: req.body.fecha            
         }
         await SaleSchema.findByIdAndUpdate(req.params.id, newSale);
         res.status(201).json({ data: newSale })
@@ -121,7 +122,8 @@ const updateSale =  async (req,res)=>{
             }
         })
     }
-}             
+}
+
 
 const deleteSale = async (req, res) => {
     if (req.params.id != 'undefined') {
@@ -133,7 +135,7 @@ const deleteSale = async (req, res) => {
             res.status(404).json({
                 error: {
                     code: 404,
-                    message: "Venta no encontrada"
+                    message: "Saleo no encontrado"
                 }
             })
         }
